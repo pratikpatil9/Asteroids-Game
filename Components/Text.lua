@@ -37,6 +37,8 @@ function Text(text,x,y,font_size,fade_in,fade_out,wrap_width,align,opacity)
         h6 = love.graphics.newFont(10),
         p = love.graphics.newFont(16)
     }
+    
+    TEXT_FADE_DUR = 2
 
     if fade_in then
         opacity = 0.1
@@ -61,6 +63,15 @@ function Text(text,x,y,font_size,fade_in,fade_out,wrap_width,align,opacity)
 
         draw = function (self, tbl_text, index)
             if self.opacity > 0 then
+                if fade_in then
+                    if self.opacity < 1 then
+                        self.opacity = self.opacity + (1/TEXT_FADE_DUR/love.timer.getFPS())
+                    else
+                        fade_in = false
+                    end
+                elseif fade_out then
+                    self.opacity = self.opacity - (1/TEXT_FADE_DUR/love.timer.getFPS())
+                end
                 love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.opacity)
                 love.graphics.setFont(font[font_size])
                 love.graphics.printf(self.text, self.x, self.y, wrap_width, align)

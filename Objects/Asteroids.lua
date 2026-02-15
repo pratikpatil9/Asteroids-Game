@@ -5,7 +5,7 @@ function Asteroids( x, y, ast_size, level)
     local ASTEROID_VERT = 10
     local ASTROID_JAG = 0.4
     local ASTROID_SPEED = math.random(50) + level * 2
-    local MIN_ASTEROID_SIZE = ASTEROIDS_SIZE/3
+    local MIN_ASTEROID_SIZE = ASTEROIDS_SIZE/6
 
     local dir = -1
     if math.random() < 0.5 then
@@ -76,10 +76,22 @@ function Asteroids( x, y, ast_size, level)
             
         end,
 
-        destroy = function (self, asteroid_tbl, index)
-            if self.radius > MIN_ASTEROID_SIZE/2 then
+        destroy = function (self, asteroid_tbl, index, game)
+            if self.radius > MIN_ASTEROID_SIZE then
                 table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius/2, level))
                 table.insert(asteroid_tbl, Asteroids(self.x, self.y, self.radius/2, level))
+            end
+
+            if self.radius >= ASTEROIDS_SIZE/2 then
+                game.score = game.score + 20
+            elseif self.radius >= MIN_ASTEROID_SIZE then
+                game.score = game.score + 100
+            else
+                game.score = game.score + 50
+            end
+
+            if game.score > game.high_score then
+                game.high_score = game.score
             end
 
             table.remove(asteroid_tbl, index)

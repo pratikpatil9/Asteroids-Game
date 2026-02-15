@@ -1,9 +1,9 @@
+require "globals"
 local love = require('love')
 local Lazer = require 'Objects.Lazer'
-function Player(debugging, num_lives)
+function Player(num_lives)
     local SHIP_SIZE = 30
     local VIEW_ANGLE = math.rad(90)
-    local debugging = debugging or false
     local MAX_LAZERS = 30
     local LAZER_DISTANCE = 0.6
     local EXPLOAD_DUR = 30
@@ -100,7 +100,7 @@ function Player(debugging, num_lives)
                     self:drawFlameThrust("fill", {255/255, 102/255, 25/255})
                 end
 
-                if debugging then
+                if show_debugging then
                 love.graphics.setColor(1,0,0,opacity)
                 love.graphics.rectangle("fill", self.x - 2, self.y - 2, 4, 4)
                 love.graphics.circle("line", self.x, self.y, self.radius)
